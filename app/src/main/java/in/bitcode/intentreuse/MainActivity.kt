@@ -46,6 +46,8 @@ class MainActivity : AppCompatActivity() {
 
         btnVideo.setOnClickListener {
             var intent = Intent(Intent.ACTION_VIEW)
+
+            //intent.flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             intent.setDataAndType(
                 Uri.parse(edtPath.text.toString()),
                 "video/mp4"
