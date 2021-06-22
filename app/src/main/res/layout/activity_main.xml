@@ -7,6 +7,13 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/btnSendBR"
+        android:text="Send BR"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

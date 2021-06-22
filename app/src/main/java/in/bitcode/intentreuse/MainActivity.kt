@@ -1,6 +1,8 @@
 package `in`.bitcode.intentreuse
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,11 +12,13 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.core.app.ActivityCompat
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var edtPath: EditText
     lateinit var btnShowImage: Button
+    lateinit var btnSendBR: Button
     lateinit var btnShowImageInGal: Button
     lateinit var btnVideo: Button
     lateinit var btnAudio: Button
@@ -25,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var imgUser: ImageView
 
 
+    @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -90,6 +95,18 @@ class MainActivity : AppCompatActivity() {
             intent.setType("image/*")
             startActivityForResult(intent, 1)
         }
+
+        btnSendBR.setOnClickListener {
+            var intent = Intent("in.bitcode.media.DOWNLOAD_COMPLETE")
+            intent.putExtra("path", edtPath.text.toString())
+            sendBroadcast(intent)
+
+            if(ActivityCompat.checkSelfPermission(MainActivity@this, android.Manifest.permission.BROADCAST_STICKY) == PackageManager.PERMISSION_GRANTED) {
+                var stickyIntent = Intent("in.bitcode.event.COMPLETE")
+                sendStickyBroadcast(stickyIntent)
+            }
+
+        }
     }
 
     private inner class BtnShowImageClickListener : View.OnClickListener {
@@ -117,6 +134,8 @@ class MainActivity : AppCompatActivity() {
         btnShareImage = findViewById(R.id.btnShare)
         btnPickImage = findViewById(R.id.btnPickImage)
         imgUser = findViewById(R.id.imgUser)
+        btnSendBR = findViewById(R.id.btnSendBR)
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
